@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:first_app_lpu/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:first_app_lpu/main.dart';
 
@@ -11,21 +13,23 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+
+  final FirebaseAuthServices _auth =FirebaseAuthServices();
+
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-  TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+
 
   @override
-  void initState() {
-    super.initState();
-    _userNameController.clear();
-    _emailController.clear();
-    _passwordController.clear();
-    _confirmPasswordController.clear();
+  void dispose() {
+    // TODO: implement dispose
+    _userNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,6 +101,8 @@ class _SignupPageState extends State<SignupPage> {
                   elevation: 7,
                 ),
                 onPressed: () {
+                  _signup();
+
                   String username = _userNameController.text;
                   String email = _emailController.text;
                   String password = _passwordController.text;
@@ -151,5 +157,22 @@ class _SignupPageState extends State<SignupPage> {
         ),
       ),
     );
+  }
+  void _signup() async {
+    String username = _userNameController.text;
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    User? user = await _auth.signUpWithEmailAndPassword(email, password);
+
+    if (user != null) {
+      print("User successfully created");
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const Homepage()),
+      );
+    } else {
+      print("Failed to create user");
+    }
   }
 }
