@@ -38,8 +38,9 @@ dependencies:
   flutter_date_pickers: ^0.4.3
   firebase_auth: ^5.1.0
   firebase_core: ^3.1.0
-  cloud_firestore: ^5.0.2
-  provider: ^6.1.2
+  google_sign_in: ^6.2.1
+
+
 
 
 dev_dependencies:

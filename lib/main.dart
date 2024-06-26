@@ -1,13 +1,14 @@
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:first_app_lpu/message.dart';
+import 'package:first_app_lpu/services/auth_service.dart';
 import 'package:first_app_lpu/splash%20screen.dart';
 import 'package:flutter/material.dart';
 import 'authentication.dart';
 import 'homepage.dart';
 import 'loginPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-void main()async {
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
@@ -36,8 +37,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-  final FirebaseAuthServices _auth =FirebaseAuthServices();
+  final FirebaseAuthServices _auth = FirebaseAuthServices();
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -45,6 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
   // Define focus nodes for text fields
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
+
+  bool _isPasswordVisible = false; // State variable for password visibility
 
   @override
   void dispose() {
@@ -94,9 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               borderRadius: BorderRadius.circular(6),
                             ),
                           ),
-                          onPressed: () {
-                            // Add Google login functionality here
-                          },
+                          onPressed: () => AuthService().signInWithGoogle(),
+
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -114,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       SizedBox(height: 20,),
-                      Text("or continue with email",style: TextStyle(fontSize: 16),),
+                      Text("or continue with email", style: TextStyle(fontSize: 16),),
                       SizedBox(height: 16),
                       TextField(
                         controller: _emailController,
@@ -122,7 +123,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.mail_outline),
                           labelText: 'Enter your email',
-
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -143,11 +143,22 @@ class _MyHomePageState extends State<MyHomePage> {
                       TextField(
                         controller: _passwordController,
                         focusNode: _passwordFocus,
-                        obscureText: true,
+                        obscureText: !_isPasswordVisible,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.lock_outline),
                           labelText: 'Enter your password',
-                          suffixIcon: Icon(Icons.remove_red_eye_outlined),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                          ),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(10),
@@ -166,7 +177,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       SizedBox(height: 16,),
-                      Text("Forget your pssword?",style: TextStyle(fontSize: 16,color: Colors.blue.shade700),),
+                      Text("Forget your password?", style: TextStyle(fontSize: 16, color: Colors.blue.shade700),),
                       const SizedBox(height: 16),
                       SizedBox(
                         width: double.infinity, // Button expands to full width
@@ -192,15 +203,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                   backgroundColor: Colors.red,
                                   behavior: SnackBarBehavior.floating,
                                   margin: EdgeInsets.all(5),
-                                ),
-                              );
-                            } else {
-                              // Handle login action here
-                              //print('Email: $email, Password: $password');
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Messagepage(title: 'message'),
                                 ),
                               );
                             }
@@ -242,28 +244,37 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-  void _login() async{
+
+  void _login() async {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    User? user = await _auth.signInWithEmailAndPassword( email, password);
+    User? user = await _auth.signInWithEmailAndPassword(email, password);
 
     if (user != null) {
       print("User Login Successfully ");
-      showDialog(context: context, builder: (BuildContext context){
+      showDialog(context: context, builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Successfully Login ",style: TextStyle(color: Colors.blue),),
+          title: Text("Successfully Login ", style: TextStyle(color: Colors.green),),
           actions: [
-            TextButton(onPressed: (){
+            TextButton(onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(
-                  builder:(context)=> const Homepage()));
+                      builder: (context) => const Messagepage(title: 'message')));
             }, child: Text("Ok")),
           ],
         );
       });
     } else {
       print("Failed to create user");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to login'),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.all(5),
+        ),
+      );
     }
   }
 }

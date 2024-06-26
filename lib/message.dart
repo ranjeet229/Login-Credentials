@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'main.dart';
 
 class Messagepage extends StatefulWidget {
   const Messagepage({Key? key, required this.title}) : super(key: key);
@@ -41,14 +44,64 @@ class _MessagepageState extends State<Messagepage> {
     "https://e7.pngegg.com/pngimages/942/789/png-clipart-adobe-creative-cloud-adobe-bridge-face-gimp-recruiter-face-photography.png",
   ];
 
+  void _showSignOutDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Sign Out"),
+          content: Text("Are you sure you want to sign out?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+            TextButton(
+              child: Text("Sign Out"),
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+                const snackBar =SnackBar(content: Text("You are Successfully SignOut"),
+                  backgroundColor: Colors.green,);
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyHomePage(title: 'Home')),
+                );
+                //Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.teal.shade200,
       appBar: AppBar(
-        backgroundColor: Colors.teal.shade700, // Change the app bar color to teal
+        backgroundColor: Colors.teal.shade700,
         title: Text(widget.title, style: TextStyle(color: Colors.white)),
         centerTitle: true,
+        leading: IconButton(
+          color: Colors.white,
+          icon: Icon(Icons.menu),
+          onPressed: () {
+            // Implement your menu action here
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            color: Colors.white,
+            onPressed: () {
+              _showSignOutDialog(); // Call method to show sign-out dialog
+            },
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: arrNames.length,
@@ -83,5 +136,4 @@ class _MessagepageState extends State<Messagepage> {
       ),
     );
   }
-
 }

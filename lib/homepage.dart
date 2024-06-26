@@ -3,8 +3,6 @@ import 'package:first_app_lpu/authentication.dart';
 import 'package:first_app_lpu/loginPage.dart';
 import 'package:first_app_lpu/main.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
 
