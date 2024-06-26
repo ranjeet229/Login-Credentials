@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app_lpu/authentication.dart';
-import 'package:flutter/material.dart';
 import 'package:first_app_lpu/main.dart';
+import 'package:flutter/material.dart';
 
 import 'homepage.dart'; // Assuming this is where HomePage is imported from
 
@@ -163,13 +163,16 @@ class _SignupPageState extends State<SignupPage> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    User? user = await _auth.signUpWithEmailAndPassword(email, password);
+    User? user = await _auth.signUpWithEmailAndPassword(username, email, password);
 
     if (user != null) {
       print("User successfully created");
-      Navigator.pushReplacement(
+      const snackBar =SnackBar(content: Text("User is sucessfully created"),
+        backgroundColor: Colors.green,);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const Homepage()),
+        MaterialPageRoute(builder: (context) => const MyHomePage(title: 'home')),
       );
     } else {
       print("Failed to create user");

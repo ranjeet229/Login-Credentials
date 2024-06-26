@@ -1,9 +1,11 @@
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:first_app_lpu/message.dart';
+import 'package:first_app_lpu/splash%20screen.dart';
 import 'package:flutter/material.dart';
-import 'firebase_options.dart';
-import 'signupPage.dart'; // Assuming these are correctly imported
-import 'loginPage.dart'; // Assuming these are correctly imported
+import 'authentication.dart';
+import 'homepage.dart';
+import 'loginPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: splashPage(),
     );
   }
 }
@@ -34,6 +36,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  final FirebaseAuthServices _auth =FirebaseAuthServices();
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -176,6 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             elevation: 7,
                           ),
                           onPressed: () {
+                            _login();
                             String email = _emailController.text;
                             String password = _passwordController.text;
 
@@ -190,7 +196,13 @@ class _MyHomePageState extends State<MyHomePage> {
                               );
                             } else {
                               // Handle login action here
-                              print('Email: $email, Password: $password');
+                              //print('Email: $email, Password: $password');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Messagepage(title: 'message'),
+                                ),
+                              );
                             }
                           },
                           child: const Text('Login', style: TextStyle(fontSize: 20)),
@@ -229,5 +241,29 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+  void _login() async{
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    User? user = await _auth.signInWithEmailAndPassword( email, password);
+
+    if (user != null) {
+      print("User Login Successfully ");
+      showDialog(context: context, builder: (BuildContext context){
+        return AlertDialog(
+          title: Text("Successfully Login ",style: TextStyle(color: Colors.blue),),
+          actions: [
+            TextButton(onPressed: (){
+              Navigator.push(context,
+                  MaterialPageRoute(
+                  builder:(context)=> const Homepage()));
+            }, child: Text("Ok")),
+          ],
+        );
+      });
+    } else {
+      print("Failed to create user");
+    }
   }
 }
