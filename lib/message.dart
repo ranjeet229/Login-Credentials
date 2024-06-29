@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'chat/ChatPage.dart';
 import 'main.dart';
 
 class Messagepage extends StatefulWidget {
@@ -49,27 +50,58 @@ class _MessagepageState extends State<Messagepage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Sign Out"),
-          content: Text("Are you sure you want to sign out?"),
+          title: Text(
+            "Logout",
+            style: TextStyle(
+              color: Colors.blueAccent,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            "Are you sure you want to Logout?",
+            style: TextStyle(
+              color: Colors.black87,
+              fontSize: 18,
+            ),
+          ),
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
           actions: <Widget>[
             TextButton(
-              child: Text("Cancel"),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.blueAccent, textStyle: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+              ),
+              child: Text("no"),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
             TextButton(
-              child: Text("Sign Out"),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.redAccent, textStyle: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+              ),
+              child: Text("yes"),
               onPressed: () {
                 FirebaseAuth.instance.signOut();
-                const snackBar =SnackBar(content: Text("You are Successfully SignOut"),
-                  backgroundColor: Colors.green,);
+                const snackBar = SnackBar(
+                  content: Text("You are Successfully Signed Out"),
+                  backgroundColor: Colors.green,
+                );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MyHomePage(title: 'Home')),
+                  MaterialPageRoute(builder: (context) => LoginPage()),
                 );
-                //Navigator.of(context).pop(); // Close the dialog
+                // Navigator.of(context).pop(); // Close the dialog
               },
             ),
           ],
@@ -84,13 +116,17 @@ class _MessagepageState extends State<Messagepage> {
       backgroundColor: Colors.teal.shade200,
       appBar: AppBar(
         backgroundColor: Colors.teal.shade700,
-        title: Text(widget.title, style: TextStyle(color: Colors.white)),
+        title: Text('Connexify', style: TextStyle(color: Colors.white)),
         centerTitle: true,
-        leading: IconButton(
-          color: Colors.white,
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            // Implement your menu action here
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              color: Colors.white,
+              icon: Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
           },
         ),
         actions: [
@@ -102,6 +138,45 @@ class _MessagepageState extends State<Messagepage> {
             },
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+              accountName: Text("Ranjeet kumar"),
+              accountEmail: Text("ranjeet@example.com"),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage("assets/images/boy.png"),
+
+              ),
+              decoration: BoxDecoration(
+                color: Colors.teal.shade700,
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text("Profile"),
+              onTap: () {
+                // Handle profile tap
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text("Settings"),
+              onTap: () {
+                // Handle settings tap
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text("Logout"),
+              onTap: () {
+                _showSignOutDialog();
+              },
+            ),
+          ],
+        ),
       ),
       body: ListView.builder(
         itemCount: arrNames.length,
@@ -130,6 +205,18 @@ class _MessagepageState extends State<Messagepage> {
               ),
               subtitle: Text(subtitles[index]),
               trailing: Icon(Icons.arrow_forward_ios_outlined),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChatPage(
+                        name: arrNames[index],
+                        message: subtitles[index],
+                        imageUrl: images[index % images.length],
+                      ),
+                    ),
+                  );
+                },
             ),
           );
         },

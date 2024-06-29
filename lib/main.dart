@@ -14,29 +14,48 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  User? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkUser();
+  }
+
+  void _checkUser() {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      setState(() {
+        _user = user;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: splashPage(),
+      home: _user == null ? SplashPage() : Messagepage(title: 'message'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _LoginPageState extends State<LoginPage> {
   final FirebaseAuthServices _auth = FirebaseAuthServices();
 
   final TextEditingController _emailController = TextEditingController();
@@ -258,7 +277,7 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text("Successfully Login ", style: TextStyle(color: Colors.green),),
           actions: [
             TextButton(onPressed: () {
-              Navigator.push(context,
+              Navigator.pushReplacement(context,
                   MaterialPageRoute(
                       builder: (context) => const Messagepage(title: 'message')));
             }, child: Text("Ok")),
