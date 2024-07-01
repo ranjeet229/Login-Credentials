@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:first_app_lpu/profilePage.dart';
 import 'package:flutter/material.dart';
 
 import 'chat/ChatPage.dart';
@@ -146,9 +147,17 @@ class _MessagepageState extends State<Messagepage> {
             UserAccountsDrawerHeader(
               accountName: Text("Ranjeet kumar"),
               accountEmail: Text("ranjeet@example.com"),
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage("assets/images/boy.png"),
-
+              currentAccountPicture: GestureDetector(
+                onTap: () {
+                  // Handle profile picture tap
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) =>CompleteProfile()),
+                  );
+                },
+                child: CircleAvatar(
+                  backgroundImage: AssetImage("assets/images/boy.png"),
+                ),
               ),
               decoration: BoxDecoration(
                 color: Colors.teal.shade700,
@@ -159,6 +168,10 @@ class _MessagepageState extends State<Messagepage> {
               title: Text("Profile"),
               onTap: () {
                 // Handle profile tap
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CompleteProfile()),
+                );
               },
             ),
             ListTile(
@@ -205,18 +218,18 @@ class _MessagepageState extends State<Messagepage> {
               ),
               subtitle: Text(subtitles[index]),
               trailing: Icon(Icons.arrow_forward_ios_outlined),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ChatPage(
-                        name: arrNames[index],
-                        message: subtitles[index],
-                        imageUrl: images[index % images.length],
-                      ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChatPage(
+                      name: arrNames[index],
+                      message: subtitles[index],
+                      imageUrl: images[index % images.length],
                     ),
-                  );
-                },
+                  ),
+                );
+              },
             ),
           );
         },
@@ -224,3 +237,4 @@ class _MessagepageState extends State<Messagepage> {
     );
   }
 }
+
