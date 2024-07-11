@@ -1,7 +1,11 @@
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app_lpu/profilePage.dart';
 import 'package:flutter/material.dart';
-
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'chat/ChatPage.dart';
 import 'main.dart';
 
@@ -15,6 +19,79 @@ class Messagepage extends StatefulWidget {
 }
 
 class _MessagepageState extends State<Messagepage> {
+  File? imageFile;
+  SharedPreferences? _prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfilePicture();
+  }
+
+  void _loadProfilePicture() async {
+    _prefs = await SharedPreferences.getInstance();
+    String? imagePath = _prefs?.getString('profile_picture');
+    if (imagePath != null) {
+      setState(() {
+        imageFile = File(imagePath);
+      });
+    }
+  }
+
+  void selectImage(ImageSource source) async {
+    XFile? pickedFile = await ImagePicker().pickImage(source: source);
+
+    if (pickedFile != null) {
+      cropImage(pickedFile);
+    }
+  }
+
+  void cropImage(XFile file) async {
+    final croppedImage = await ImageCropper().cropImage(
+      sourcePath: file.path,
+      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      compressQuality: 40,
+    );
+
+    if (croppedImage != null) {
+      setState(() {
+        imageFile = File(croppedImage.path);
+        _prefs?.setString('profile_picture', croppedImage.path);
+      });
+    }
+  }
+
+  void _showChangePictureDialog() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 150,
+          child: Column(
+            children: [
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Choose from gallery'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  selectImage(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_camera),
+                title: Text('Take a photo'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  selectImage(ImageSource.camera);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   var arrNames = [
     'Laurent', 'Tracy', 'Claire', 'Joe', 'Mark', 'Willams'
   ];
@@ -148,15 +225,15 @@ class _MessagepageState extends State<Messagepage> {
               accountName: Text("Ranjeet kumar"),
               accountEmail: Text("ranjeet@example.com"),
               currentAccountPicture: GestureDetector(
-                onTap: () {
-                  // Handle profile picture tap
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) =>CompleteProfile()),
-                  );
-                },
+                onTap: _showChangePictureDialog,
                 child: CircleAvatar(
-                  backgroundImage: AssetImage("assets/images/boy.png"),
+                  backgroundImage: imageFile != null ? FileImage(imageFile!) : null,
+                  child: imageFile == null
+                      ? Icon(
+                    Icons.person,
+                    size: 30,
+                  )
+                      : null,
                 ),
               ),
               decoration: BoxDecoration(

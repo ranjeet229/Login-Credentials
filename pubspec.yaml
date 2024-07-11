@@ -43,6 +43,8 @@ dependencies:
   cloud_firestore: ^5.0.2
   firebase_storage: ^12.1.0
   image_cropper: ^7.1.0
+  shared_preferences: ^2.2.3
+  google_fonts: ^6.2.1
 
 
 
