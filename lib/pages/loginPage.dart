@@ -3,7 +3,7 @@ import 'package:first_app_lpu/authentication.dart';
 import 'package:first_app_lpu/main.dart';
 import 'package:flutter/material.dart';
 
-import 'homepage.dart';
+import '../homepage.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);

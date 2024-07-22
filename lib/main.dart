@@ -1,11 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:first_app_lpu/message.dart';
-import 'package:first_app_lpu/services/auth_service.dart';
-import 'package:first_app_lpu/splash%20screen.dart';
+import 'package:first_app_lpu/pages/message.dart';
+import 'package:first_app_lpu/pages/splash%20screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'authentication.dart';
-import 'homepage.dart';
-import 'loginPage.dart';
+import 'pages/loginPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
@@ -99,42 +98,47 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Log In',
-                        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 30),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            elevation: 5,
-                            padding: EdgeInsets.symmetric(vertical: 17),
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                          ),
-                          onPressed: () => AuthService().signInWithGoogle(),
+                        "LogIn",
+                        style: GoogleFonts.lato(
+                          fontSize: 30,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
 
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                "assets/images/google1.webp",
-                                height: 20, // Adjust the height as needed
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                'Sign in with Google',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
                         ),
                       ),
-                      SizedBox(height: 20,),
-                      Text("or continue with email", style: TextStyle(fontSize: 16),),
+                      SizedBox(height: 30),
+                      // SizedBox(
+                      //   width: double.infinity,
+                      //   child: ElevatedButton(
+                      //     style: ElevatedButton.styleFrom(
+                      //       elevation: 5,
+                      //       padding: EdgeInsets.symmetric(vertical: 17),
+                      //       backgroundColor: Colors.black,
+                      //       foregroundColor: Colors.white,
+                      //       shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(6),
+                      //       ),
+                      //     ),
+                      //     onPressed: () => AuthService().signInWithGoogle(),
+                      //
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.center,
+                      //       children: [
+                      //         Image.asset(
+                      //           "assets/images/google1.webp",
+                      //           height: 20, // Adjust the height as needed
+                      //         ),
+                      //         SizedBox(width: 10),
+                      //         Text(
+                      //           'Sign in with Google',
+                      //           style: TextStyle(fontSize: 16),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                      // SizedBox(height: 20,),
+                      Text(" continue with email", style: TextStyle(fontSize: 16),),
                       SizedBox(height: 16),
                       TextField(
                         controller: _emailController,

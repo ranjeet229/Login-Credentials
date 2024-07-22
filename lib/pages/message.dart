@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:first_app_lpu/profilePage.dart';
+import 'package:first_app_lpu/pages/profilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'chat/ChatPage.dart';
-import 'main.dart';
+import '../chat/ChatPage.dart';
+import '../main.dart';
 
 class Messagepage extends StatefulWidget {
   const Messagepage({Key? key, required this.title}) : super(key: key);
@@ -191,9 +191,9 @@ class _MessagepageState extends State<Messagepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal.shade200,
+      backgroundColor: Colors.blue.shade200,
       appBar: AppBar(
-        backgroundColor: Colors.teal.shade700,
+        backgroundColor: Colors.blue.shade700,
         title: Text('Connexify', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         leading: Builder(
@@ -237,7 +237,7 @@ class _MessagepageState extends State<Messagepage> {
                 ),
               ),
               decoration: BoxDecoration(
-                color: Colors.teal.shade700,
+                color: Colors.blue.shade700,
               ),
             ),
             ListTile(
@@ -311,6 +311,16 @@ class _MessagepageState extends State<Messagepage> {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Your onPressed code here
+        },
+        child: Icon(Icons.search),
+        shape: CircleBorder(),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+      ),
+
     );
   }
 }
