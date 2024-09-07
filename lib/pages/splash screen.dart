@@ -49,7 +49,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
           alignment: Alignment.center,
           children: [
             Text(
-              'Connexify',
+              'AgroLink',
               style: TextStyle(color: Color(0xFF4CAF50), fontSize: 16, fontWeight: FontWeight.bold),
             ),
             ..._listRadius.map((radius) {

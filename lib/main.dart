@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:first_app_lpu/Farmer_market/Farmer_dashboard.dart';
 import 'package:first_app_lpu/pages/message.dart';
 import 'package:first_app_lpu/pages/splash%20screen.dart';
 import 'package:first_app_lpu/services/auth_service.dart';
@@ -108,54 +109,54 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       SizedBox(height: 30),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 5,
-                        padding: EdgeInsets.symmetric(vertical: 17),
-                        backgroundColor: Colors.black,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                      ),
-                      onPressed: () async {
-                        User? user = await AuthService().signInWithGoogle();
-                        if (user != null) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => const Messagepage(title: 'message')),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Google sign-in failed'),
-                              backgroundColor: Colors.red,
-                              behavior: SnackBarBehavior.floating,
-                              margin: EdgeInsets.all(5),
-                            ),
-                          );
-                        }
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/images/google1.webp",
-                            height: 20,
-                          ),
-                          const SizedBox(width: 10),
-                          const Text(
-                            'Sign in with Google',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                      SizedBox(height: 20,),
-                      Text(" continue with email", style: TextStyle(fontSize: 16),),
+                  // SizedBox(
+                  //   width: double.infinity,
+                  //   child: ElevatedButton(
+                  //     style: ElevatedButton.styleFrom(
+                  //       elevation: 5,
+                  //       padding: EdgeInsets.symmetric(vertical: 17),
+                  //       backgroundColor: Colors.black,
+                  //       foregroundColor: Colors.white,
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(6),
+                  //       ),
+                  //     ),
+                  //     onPressed: () async {
+                  //       User? user = await AuthService().signInWithGoogle();
+                  //       if (user != null) {
+                  //         Navigator.pushReplacement(
+                  //           context,
+                  //           MaterialPageRoute(builder: (context) => const Messagepage(title: 'message')),
+                  //         );
+                  //       } else {
+                  //         ScaffoldMessenger.of(context).showSnackBar(
+                  //           const SnackBar(
+                  //             content: Text('Google sign-in failed'),
+                  //             backgroundColor: Colors.red,
+                  //             behavior: SnackBarBehavior.floating,
+                  //             margin: EdgeInsets.all(5),
+                  //           ),
+                  //         );
+                  //       }
+                  //     },
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         Image.asset(
+                  //           "assets/images/google1.webp",
+                  //           height: 20,
+                  //         ),
+                  //         const SizedBox(width: 10),
+                  //         const Text(
+                  //           'Sign in with Google',
+                  //           style: TextStyle(fontSize: 16),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  //     SizedBox(height: 20,),
+                  //     Text(" continue with email", style: TextStyle(fontSize: 16),),
                       SizedBox(height: 16),
                       TextField(
                         controller: _emailController,
@@ -300,7 +301,7 @@ class _LoginPageState extends State<LoginPage> {
             TextButton(onPressed: () {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(
-                      builder: (context) => const Messagepage(title: 'message')));
+                      builder: (context) => FarmerDashboard()));
             }, child: Text("Ok")),
           ],
         );
