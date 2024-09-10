@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:first_app_lpu/main.dart';
+import 'package:first_app_lpu/services/phone_auth.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {
@@ -30,7 +31,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
       });
     _animationController.repeat();
     Timer(Duration(seconds: 2), () {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PhoneAuth()));
     });
   }
 

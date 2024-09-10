@@ -296,7 +296,7 @@ class _LoginPageState extends State<LoginPage> {
       print("User Login Successfully ");
       showDialog(context: context, builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Successfully Login ", style: TextStyle(color: Colors.green),),
+          title: Text("Successfully Login ", style: TextStyle(color: Colors.green),), 
           actions: [
             TextButton(onPressed: () {
               Navigator.pushReplacement(context,
