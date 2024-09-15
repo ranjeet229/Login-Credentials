@@ -1,7 +1,12 @@
+import 'dart:developer'; // Import for log function
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:first_app_lpu/Farmer_market/Farmer_dashboard.dart';
 import 'package:flutter/material.dart';
 
 class OTPScreen extends StatefulWidget {
-  const OTPScreen({super.key});
+  final String verificationId; // Make the variable final
+  OTPScreen({super.key, required this.verificationId});
 
   @override
   State<OTPScreen> createState() => _OTPScreenState();
@@ -40,14 +45,33 @@ class _OTPScreenState extends State<OTPScreen> {
                   borderRadius: BorderRadius.circular(30),
                   borderSide: BorderSide.none,
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+                contentPadding:
+                EdgeInsets.symmetric(vertical: 18, horizontal: 20),
               ),
             ),
             SizedBox(height: 30),
-            // OTP verification button
+
             ElevatedButton(
-              onPressed: () {
-                // OTP verification logic
+              onPressed: () async {
+                try {
+                  PhoneAuthCredential credential = PhoneAuthProvider.credential(
+                    verificationId: widget.verificationId,
+                    smsCode: otpController.text.toString(),
+                  );
+                  await FirebaseAuth.instance.signInWithCredential(credential);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => FarmerDashboard()),
+                  );
+                } catch (ex) {
+                  log('Error during OTP verification: ${ex.toString()}');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Invalid OTP, please try again.'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 80),

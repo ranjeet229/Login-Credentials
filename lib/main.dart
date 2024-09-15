@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:first_app_lpu/Farmer_market/Farmer_dashboard.dart';
 import 'package:first_app_lpu/pages/message.dart';
 import 'package:first_app_lpu/pages/splash%20screen.dart';
-import 'package:first_app_lpu/services/auth_service.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'authentication.dart';

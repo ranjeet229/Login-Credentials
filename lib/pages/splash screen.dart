@@ -31,7 +31,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
       });
     _animationController.repeat();
     Timer(Duration(seconds: 2), () {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PhoneAuth()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
     });
   }
 
