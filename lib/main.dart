@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:first_app_lpu/Farmer_market/Farmer_dashboard.dart';
-import 'package:first_app_lpu/pages/message.dart';
-import 'package:first_app_lpu/pages/splash%20screen.dart';
+import 'package:first_app_lpu/Farmer_market/page/select_type.dart';
 
+import 'package:first_app_lpu/pages/splash%20screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'authentication.dart';
@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: _user == null ? SplashPage() : Messagepage(title: 'message'),
+      home: _user == null ? SplashPage() : FarmerApp(),
     );
   }
 }
@@ -218,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       SizedBox(height: 16,),
-                      Text("Forget your password?", style: TextStyle(fontSize: 16, color: Colors.blue.shade700),),
+                      //Text("Forget your password?", style: TextStyle(fontSize: 16, color: Colors.blue.shade700),),
                       const SizedBox(height: 16),
                       SizedBox(
                         width: double.infinity, // Button expands to full width
@@ -296,12 +296,12 @@ class _LoginPageState extends State<LoginPage> {
       print("User Login Successfully ");
       showDialog(context: context, builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Successfully Login ", style: TextStyle(color: Colors.green),), 
+          title: Text("Successfully Login ", style: TextStyle(color: Colors.green),),
           actions: [
             TextButton(onPressed: () {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(
-                      builder: (context) => FarmerDashboard()));
+                      builder: (context) => SelectionPage()));
             }, child: Text("Ok")),
           ],
         );

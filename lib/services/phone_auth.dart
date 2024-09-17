@@ -51,55 +51,58 @@ class _PhoneAuthState extends State<PhoneAuth> {
             isLoading
                 ? CircularProgressIndicator()
                 : ElevatedButton(
-              onPressed: () async {
-                String phoneNumber = phoneController.text.trim();
-                if (phoneNumber.isNotEmpty) {
-                  setState(() {
-                    isLoading = true;  // Start loading
-                  });
+                onPressed: () async {
+                  String phoneNumber = phoneController.text.trim();
+                  if (phoneNumber.isNotEmpty) {
+                    setState(() {
+                      isLoading = true; // Start loading
+                    });
 
-                  await FirebaseAuth.instance.verifyPhoneNumber(
-                    phoneNumber: phoneNumber,
-                    verificationCompleted: (PhoneAuthCredential credential) async {
-                      // Auto-verification case
-                      await FirebaseAuth.instance
-                          .signInWithCredential(credential);
-                    },
-                    verificationFailed: (FirebaseAuthException ex) {
-                      // Handle the error
+                    try {
+                      await FirebaseAuth.instance.verifyPhoneNumber(
+                        phoneNumber: phoneNumber,
+                        verificationCompleted: (PhoneAuthCredential credential) async {
+                          await FirebaseAuth.instance.signInWithCredential(credential);
+                        },
+                        verificationFailed: (FirebaseAuthException ex) {
+                          setState(() {
+                            isLoading = false; // Stop loading
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(ex.message ?? "Verification Failed")),
+                          );
+                        },
+                        codeSent: (String verficationid, int? resendtoken) {
+                          setState(() {
+                            isLoading = false; // Stop loading
+                          });
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OTPScreen(
+                                verificationId: verficationid,
+                              ),
+                            ),
+                          );
+                        },
+                        codeAutoRetrievalTimeout: (String verificationId) {},
+                      );
+                    } catch (e) {
                       setState(() {
-                        isLoading = false;  // Stop loading
+                        isLoading = false; // Stop loading
                       });
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(ex.message ?? "Verification Failed")),
+                        SnackBar(content: Text("An error occurred: ${e.toString()}")),
                       );
-                    },
-                    codeSent: (String verficationid, int? resendtoken) {
-                      // Navigate to the OTP screen when code is sent
-                      setState(() {
-                        isLoading = false;  // Stop loading
-                      });
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => OTPScreen(
-                            verificationId: verficationid,
-                          ),
-                        ),
-                      );
-                    },
-                    codeAutoRetrievalTimeout: (String verificationId) {
-                      // Auto retrieval timeout
-                    },
-                  );
-                } else {
-                  // Display error message if phone number is empty
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Please enter a valid phone number")),
-                  );
-                }
-              },
-              style: ElevatedButton.styleFrom(
+                    }
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Please enter a valid phone number")),
+                    );
+                  }
+                },
+
+                style: ElevatedButton.styleFrom(
                 padding:
                 EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                 backgroundColor: Colors.teal,

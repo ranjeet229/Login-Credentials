@@ -61,7 +61,7 @@ class _OTPScreenState extends State<OTPScreen> {
                   await FirebaseAuth.instance.signInWithCredential(credential);
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => FarmerDashboard()),
+                    MaterialPageRoute(builder: (context) => FarmerApp()),
                   );
                 } catch (ex) {
                   log('Error during OTP verification: ${ex.toString()}');

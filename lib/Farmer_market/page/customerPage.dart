@@ -1,21 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:first_app_lpu/Farmer_market/page/product_details_page_seller.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:first_app_lpu/Farmer_market/page/ListProductPage.dart';
-
+import 'package:first_app_lpu/Farmer_market/page/Product_detail_page.dart';
 
 import '../../main.dart';
 
 
-class FarmerApp extends StatelessWidget {
+class CustomerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomeScreen(),
       routes: {
-        '/product_details': (context) => ProductDetailsPageSeller(),
+        '/product_details': (context) => ProductDetailsPage(),
         '/list_product': (context) => ListProductPage(),
         '/login': (context) => LoginPage(), // Add login route
       },
@@ -216,20 +215,20 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
 
-            ListTile(
-              leading: Icon(Icons.add_box),
-              title: Text('List a Product'),
-              onTap: () async {
-                final result = await Navigator.pushNamed(
-                  context,
-                  '/list_product',
-                );
-
-                if (result != null) {
-                  _addNewProduct(result as Map<String, dynamic>);
-                }
-              },
-            ),
+            // ListTile(
+            //   leading: Icon(Icons.add_box),
+            //   title: Text('List a Product'),
+            //   onTap: () async {
+            //     final result = await Navigator.pushNamed(
+            //       context,
+            //       '/list_product',
+            //     );
+            //
+            //     if (result != null) {
+            //       _addNewProduct(result as Map<String, dynamic>);
+            //     }
+            //   },
+            // ),
             // Add the Logout ListTile
             ListTile(
               leading: Icon(Icons.logout),
@@ -247,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Listed Product',
+              'Available Product',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
