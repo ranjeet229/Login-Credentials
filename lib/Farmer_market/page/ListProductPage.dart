@@ -1,3 +1,4 @@
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,9 +12,6 @@ class _ListProductPageState extends State<ListProductPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _expiryDateController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
 
   File? _selectedImage; // To store the selected image
   final ImagePicker _picker = ImagePicker();
@@ -72,55 +70,6 @@ class _ListProductPageState extends State<ListProductPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 10),
-                // Expiry date input
-                TextFormField(
-                  controller: _expiryDateController,
-                  decoration: InputDecoration(
-                    labelText: 'Expiry Date',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the expiry date';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 10),
-                // Phone number input
-                TextFormField(
-                  controller: _phoneController,
-                  decoration: InputDecoration(
-                    labelText: 'Phone Number of Seller',
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a phone number';
-                    }
-                    if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                      return 'Please enter a valid phone number';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 10),
-                // Address input
-                TextFormField(
-                  controller: _addressController,
-                  decoration: InputDecoration(
-                    labelText: 'Address of the Farmer',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the address of the farmer';
-                    }
-                    return null;
-                  },
-                ),
                 SizedBox(height: 20),
                 // Image picker section
                 _selectedImage != null
@@ -146,15 +95,13 @@ class _ListProductPageState extends State<ListProductPage> {
                     if (_formKey.currentState!.validate()) {
                       if (_selectedImage == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Please select an image')),
+                            SnackBar(content: Text('Please select an image'))
                         );
                       } else {
+                        // Gather the product details and selected image
                         Map<String, dynamic> newProduct = {
                           'name': _nameController.text,
                           'price': _priceController.text,
-                          'expiryDate': _expiryDateController.text,
-                          'phone': _phoneController.text,
-                          'address': _addressController.text,
                           'image': _selectedImage!.path, // Pass the image path
                         };
 

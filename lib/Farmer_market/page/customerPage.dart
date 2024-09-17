@@ -35,48 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'image': 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTQvCg9Mub2HqzBhjpq72jMNr0c_jJZ-bmz08GHhCq2GF_ivqIJ',
       'isUserAdded': false,
     },
-    {
-      'name': 'Potatoes / (आलू)',
-      'price': '40',
-      'image': 'https://4.imimg.com/data4/KM/KQ/ANDROID-46853165/product-500x500.jpeg',
-      'isUserAdded': false,
-    },
-    {
-      'name': 'Onion / (प्याज)',
-      'price': '50',
-      'image': 'https://m.media-amazon.com/images/I/51DJ-9xkuQL._AC_UF1000,1000_QL80_.jpg',
-      'isUserAdded': false,
-    },
-    {
-      'name': 'ladyfinger / (भिंडी)',
-      'price': '60',
-      'image': 'https://healthwire.pk/wp-content/uploads/2022/03/lady-finger-benefits.jpg',
-      'isUserAdded': false,
-    },
-    {
-      'name': 'brinjal / (बैंगन)',
-      'price': '55',
-      'image': 'https://upload.wikimedia.org/wikipedia/commons/7/76/Solanum_melongena_24_08_2012_%281%29.JPG',
-      'isUserAdded': false,
-    },
-    {
-      'name': 'Ridge gourd / (तोरई)',
-      'price': '32',
-      'image': 'https://sahajaaharam.com/files/Ridge%20Gourd.jpg',
-      'isUserAdded': false,
-    },
-    {
-      'name': 'pumkin / (कद्दू)',
-      'price': '8',
-      'image': 'https://www.bigbasket.com/media/uploads/p/l/40023471_5-fresho-pumpkin-organically-grown.jpg',
-      'isUserAdded': false,
-    },
-    {
-      'name': 'Bottle gourd /(लौकी)',
-      'price': '8',
-      'image': 'https://budsnblush.com/cdn/shop/files/F1HybridBottleGourdBudsnblush.png?v=1709075516',
-      'isUserAdded': false,
-    },
+
   ];
 
   void _addNewProduct(Map<String, dynamic> newProduct) {

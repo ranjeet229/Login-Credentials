@@ -1,12 +1,13 @@
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:first_app_lpu/Farmer_market/page/add_to_cart.dart';
 import 'package:first_app_lpu/Farmer_market/page/product_details_page_seller.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:first_app_lpu/Farmer_market/page/ListProductPage.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
-
 
 class FarmerApp extends StatelessWidget {
   @override
@@ -78,18 +79,44 @@ class _HomeScreenState extends State<HomeScreen> {
       'image': 'https://budsnblush.com/cdn/shop/files/F1HybridBottleGourdBudsnblush.png?v=1709075516',
       'isUserAdded': false,
     },
+
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProducts();
+  }
+
+  Future<void> _loadProducts() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? encodedData = prefs.getString('products');
+    if (encodedData != null) {
+      List<dynamic> decodedData = jsonDecode(encodedData);
+      setState(() {
+        products = List<Map<String, dynamic>>.from(decodedData);
+      });
+    }
+  }
+
+  Future<void> _saveProducts() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String encodedData = jsonEncode(products);
+    await prefs.setString('products', encodedData);
+  }
 
   void _addNewProduct(Map<String, dynamic> newProduct) {
     setState(() {
       products.add({...newProduct, 'isUserAdded': true});
     });
+    _saveProducts();
   }
 
   void _deleteProduct(int index) {
     setState(() {
       products.removeAt(index);
     });
+    _saveProducts();
   }
 
   void _showSignOutDialog() {
@@ -166,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: Icon(Icons.shopping_cart),
             onPressed: () {
-              // Add action for cart
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ProductPage()));
             },
           ),
         ],
@@ -215,7 +242,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 // Navigate to profile
               },
             ),
-
             ListTile(
               leading: Icon(Icons.add_box),
               title: Text('List a Product'),
@@ -230,7 +256,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               },
             ),
-            // Add the Logout ListTile
             ListTile(
               leading: Icon(Icons.logout),
               title: Text("Logout"),
@@ -253,7 +278,6 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(height: 10),
             Expanded(
               child: GridView.builder(
-
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio: 1, // Aspect ratio for square images
@@ -267,7 +291,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: <Widget>[
                       GestureDetector(
                         onTap: () {
-                          // Passing product details when navigating to product details page
                           Navigator.pushNamed(
                             context,
                             '/product_details',
@@ -287,7 +310,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               if (product['image'].startsWith('http'))
-                              // Display network image
                                 Image.network(
                                   product['image'] as String,
                                   height: 100,
@@ -311,7 +333,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   },
                                 )
                               else
-                              // Display local image
                                 Image.file(
                                   File(product['image'] as String),
                                   height: 100,
@@ -337,8 +358,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         ),
-                      )
-                      ,
+                      ),
                       if (product['isUserAdded']) // Show delete icon only for user-added items
                         Positioned(
                           top: 5,
@@ -351,7 +371,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   );
                 },
-
               ),
             ),
           ],

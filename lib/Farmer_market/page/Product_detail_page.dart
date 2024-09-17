@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'add_to_cart.dart';
+
 class ProductDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,7 @@ class ProductDetailsPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // Add to cart action
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> ProductPage()));
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green[700],
